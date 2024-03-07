@@ -94,6 +94,34 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 }
             ]
+        },
+        {
+            ""name"": ""Menu_Map"",
+            ""id"": ""98f2ca4a-6166-4836-8568-48fa9d908547"",
+            ""actions"": [
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""6df21d92-b036-4162-b046-6e00f9197fe6"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""f6ea2582-20eb-417b-8e59-6253a6a421c9"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -101,6 +129,9 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
         // Player_Map
         m_Player_Map = asset.FindActionMap("Player_Map", throwIfNotFound: true);
         m_Player_Map_Movement = m_Player_Map.FindAction("Movement", throwIfNotFound: true);
+        // Menu_Map
+        m_Menu_Map = asset.FindActionMap("Menu_Map", throwIfNotFound: true);
+        m_Menu_Map_Pause = m_Menu_Map.FindAction("Pause", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -204,8 +235,58 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
         }
     }
     public Player_MapActions @Player_Map => new Player_MapActions(this);
+
+    // Menu_Map
+    private readonly InputActionMap m_Menu_Map;
+    private List<IMenu_MapActions> m_Menu_MapActionsCallbackInterfaces = new List<IMenu_MapActions>();
+    private readonly InputAction m_Menu_Map_Pause;
+    public struct Menu_MapActions
+    {
+        private @PlayerActions m_Wrapper;
+        public Menu_MapActions(@PlayerActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Pause => m_Wrapper.m_Menu_Map_Pause;
+        public InputActionMap Get() { return m_Wrapper.m_Menu_Map; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(Menu_MapActions set) { return set.Get(); }
+        public void AddCallbacks(IMenu_MapActions instance)
+        {
+            if (instance == null || m_Wrapper.m_Menu_MapActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_Menu_MapActionsCallbackInterfaces.Add(instance);
+            @Pause.started += instance.OnPause;
+            @Pause.performed += instance.OnPause;
+            @Pause.canceled += instance.OnPause;
+        }
+
+        private void UnregisterCallbacks(IMenu_MapActions instance)
+        {
+            @Pause.started -= instance.OnPause;
+            @Pause.performed -= instance.OnPause;
+            @Pause.canceled -= instance.OnPause;
+        }
+
+        public void RemoveCallbacks(IMenu_MapActions instance)
+        {
+            if (m_Wrapper.m_Menu_MapActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IMenu_MapActions instance)
+        {
+            foreach (var item in m_Wrapper.m_Menu_MapActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_Menu_MapActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public Menu_MapActions @Menu_Map => new Menu_MapActions(this);
     public interface IPlayer_MapActions
     {
         void OnMovement(InputAction.CallbackContext context);
+    }
+    public interface IMenu_MapActions
+    {
+        void OnPause(InputAction.CallbackContext context);
     }
 }

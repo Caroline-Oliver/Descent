@@ -1,5 +1,5 @@
 {
-    "name": "Player_Map",
+    "name": "PlayerActions",
     "maps": [
         {
             "name": "Player_Map",
@@ -70,6 +70,34 @@
                     "action": "Movement",
                     "isComposite": false,
                     "isPartOfComposite": true
+                }
+            ]
+        },
+        {
+            "name": "Menu_Map",
+            "id": "98f2ca4a-6166-4836-8568-48fa9d908547",
+            "actions": [
+                {
+                    "name": "Pause",
+                    "type": "PassThrough",
+                    "id": "6df21d92-b036-4162-b046-6e00f9197fe6",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "f6ea2582-20eb-417b-8e59-6253a6a421c9",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }
