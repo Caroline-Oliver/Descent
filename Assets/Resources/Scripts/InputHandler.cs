@@ -38,6 +38,6 @@ public class InputHandler : MonoBehaviour
 
     private void handlePlayer() {
         Vector2 moveInput = _playerActions.Player_Map.Movement.ReadValue<Vector2>();
-        player.move(moveInput);
+        player.MoveCreature(moveInput);
     }
 }
