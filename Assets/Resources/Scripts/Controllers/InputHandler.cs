@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class InputHandler : MonoBehaviour
 {
@@ -37,7 +38,17 @@ public class InputHandler : MonoBehaviour
     }
 
     private void handlePlayer() {
-        Vector2 moveInput = _playerActions.Player_Map.Movement.ReadValue<Vector2>();
-        player.MoveCreature(moveInput);
+        if (player is null) return;
+
+        try {
+            Vector2 moveInput = _playerActions.Player_Map.Movement.ReadValue<Vector2>();
+            player.MoveCreature(moveInput);
+        } catch {
+            player = null;
+        }
+    }
+
+    public void OnClick(InputAction.CallbackContext context) {
+        player.Attack();
     }
 }

@@ -4,26 +4,34 @@ using UnityEngine;
 
 public class CreatureAIMeleeState : CreatureAIState
 {
-    public double meleeRange = 1;
+    private float timestampOfRelease;
     public CreatureAIMeleeState (CreatureAI creatureAI) : base(creatureAI){}
 
     public override void BeginState()
     {
-        
+        creatureAI.SetColor(Color.red);
     }
 
     public override void UpdateState()
     {
-        if(creatureAI.GetTarget() == null){
+        if (timer < timestampOfRelease) {
+            Debug.Log(timestampOfRelease - timer);
+        }
+
+        else if(creatureAI.GetTarget() == null){
             creatureAI.ChangeState(creatureAI.investigateState);
-            return;
         }
 
-        if (creatureAI.GetDistanceToTarget() > meleeRange) {
+        else if (creatureAI.GetDistanceToTarget() > CreatureAI.meleeRange) {
             creatureAI.ChangeState(creatureAI.huntState);
-            return;
         }
+        
+        else {
+            Debug.Log("About to attack...");
 
-        // melee attack
+            creatureAI.pilotedCreature.TurnCreatureToward(creatureAI.targetCreature.transform.position);
+            creatureAI.pilotedCreature.Attack();
+            timestampOfRelease = timer + creatureAI.pilotedCreature.attackCoolDown;
+        }
     }
 }

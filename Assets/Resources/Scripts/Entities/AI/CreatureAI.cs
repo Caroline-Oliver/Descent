@@ -25,6 +25,8 @@ public class CreatureAI : MonoBehaviour
     [Header("Combat")]
     [SerializeField] public static double meleeRange = 2f;
 
+    
+
     CreatureAIState currentState;
     public CreatureAIHuntState huntState{get; private set;}
     public CreatureAIPatrolState patrolState{get; private set;}
@@ -33,6 +35,7 @@ public class CreatureAI : MonoBehaviour
 
     public void ChangeState(CreatureAIState newState) {
         currentState = newState;
+        newState.BeginState();
     }
 
     void Start()
@@ -42,7 +45,7 @@ public class CreatureAI : MonoBehaviour
         investigateState = new CreatureAIInvestigateState(this);
         meleeState = new CreatureAIMeleeState(this);
 
-        currentState = patrolState;
+        ChangeState(patrolState);
 
         pathfinder = new Pathfinder<Vector2>(GetDistance,GetNeighbourNodes,1000);
     }
@@ -50,12 +53,18 @@ public class CreatureAI : MonoBehaviour
 
     void FixedUpdate()
     {
+        try {
+            GetTarget();
+        } catch {
+            targetCreature = null;
+        }
+        
         currentState.UpdateStateBase(); //work the current state
 
     }
 
     public void SetColor(Color color) {
-        GetComponent<SpriteRenderer>().color = color;
+        pilotedCreature.GetComponent<SpriteRenderer>().color = color;
     }
 
     public Creature GetTarget() {
@@ -115,6 +124,5 @@ public class CreatureAI : MonoBehaviour
     //simple wrapper to pathfind to our target
     public void GetTargetMoveCommand(ref List<Vector2> path){
         GetMoveCommand(targetCreature.transform.position, ref path);
-
     }
 }

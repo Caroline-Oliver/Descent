@@ -10,7 +10,8 @@ public class CreatureAIHuntState : CreatureAIState
 
     public override void BeginState()
     {
-        creatureAI.SetColor(Color.red);
+        // orange
+        creatureAI.SetColor(new Color(1.0f, 0.64f, 0.0f));
     }
 
     public override void UpdateState()

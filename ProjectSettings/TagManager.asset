@@ -15,10 +15,10 @@ TagManager:
   - Entity
   - World
   - 
+  - Ground
   - 
-  - 
-  - 
-  - 
+  - Enemy
+  - Player
   - 
   - 
   - 

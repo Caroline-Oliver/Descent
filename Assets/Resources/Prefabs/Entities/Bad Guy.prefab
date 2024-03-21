@@ -14,7 +14,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1153041977834654117, guid: 7c1f0130c9c482f4a9a15371826c9127, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.506
+      value: -1.006
       objectReference: {fileID: 0}
     - target: {fileID: 1153041977834654117, guid: 7c1f0130c9c482f4a9a15371826c9127, type: 3}
       propertyPath: m_LocalPosition.z
@@ -53,8 +53,32 @@ PrefabInstance:
       value: Bad Guy
       objectReference: {fileID: 0}
     - target: {fileID: 3511838737241843685, guid: 7c1f0130c9c482f4a9a15371826c9127, type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 3511838737241843685, guid: 7c1f0130c9c482f4a9a15371826c9127, type: 3}
       propertyPath: m_TagString
       value: Enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 7225120494179736598, guid: 7c1f0130c9c482f4a9a15371826c9127, type: 3}
+      propertyPath: Health
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7225120494179736598, guid: 7c1f0130c9c482f4a9a15371826c9127, type: 3}
+      propertyPath: MaxHealth
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7225120494179736598, guid: 7c1f0130c9c482f4a9a15371826c9127, type: 3}
+      propertyPath: attackCoolDown
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7225120494179736598, guid: 7c1f0130c9c482f4a9a15371826c9127, type: 3}
+      propertyPath: enemyMask.m_Bits
+      value: 4096
+      objectReference: {fileID: 0}
+    - target: {fileID: 7225120494179736598, guid: 7c1f0130c9c482f4a9a15371826c9127, type: 3}
+      propertyPath: groundMask.m_Bits
+      value: 512
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
