@@ -12,6 +12,9 @@ EditorBuildSettings:
     path: Assets/Scenes/StartMenu.unity
     guid: 38fbab6b83503644a8f7c6e10bafb8dd
   - enabled: 1
-    path: Assets/Scenes/Limbo.unity
+    path: Assets/Scenes/SafeZone.unity
+    guid: 76a2b6b30449e02489150163b2248089
+  - enabled: 1
+    path: Assets/Scenes/Dungeon.unity
     guid: 343cd57a736a8c44ab9c1ed5cdd3857a
   m_configObjects: {}
