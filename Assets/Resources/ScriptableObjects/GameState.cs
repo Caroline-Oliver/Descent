@@ -6,4 +6,12 @@ using UnityEngine;
 public class GameState : ScriptableObject
 {
     int currentLevel = 0;
+
+    public int GetLevel() {
+        return currentLevel;
+    }
+
+    public void NextLevel() {
+        currentLevel++;
+    }
 }

@@ -33,9 +33,13 @@ public class Creature : MonoBehaviour
     [Header("Timer")]
     [SerializeField] float timer = 0f;
 
+    private SpriteRenderer spriteRenderer;
+
     void Awake() {
         body = GetComponent<Rigidbody2D>();
-        if (body is null) {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+
+        if (body == null) {
             Debug.LogError("Rigidbody2D is NULL!");
         }
         timer = 0f;
@@ -99,6 +103,20 @@ public class Creature : MonoBehaviour
         MoveCreature(Vector3.zero);
     }
 
+    public void ChangeColor(Color color) {
+        spriteRenderer.color = color;
+    }
+
+    public IEnumerator ProgressiveChangeColor(Color color1, Color color2, float duration) {
+        float timer = 0;
+        while (timer < duration) {
+            spriteRenderer.color = Color.Lerp(color1, color2, timer / duration);
+
+            timer += Time.deltaTime;
+            yield return new WaitForSeconds(0.01f);
+        }
+    }
+
     public void Attack() {
         if (timer < timeUntilNextAttack) return;
 
@@ -113,6 +131,7 @@ public class Creature : MonoBehaviour
 
     public void Hurt(float damage) {
         Health -= 1 / resistance * damage;
+        StartCoroutine(ProgressiveChangeColor(Color.red, Color.white, 0.5f));
     }
 
     private void OnDrawGizmos() {

@@ -9,7 +9,7 @@ public class CreatureAIPatrolState : CreatureAIState
     public override void BeginState()
     {
         MoveRandom();
-        creatureAI.SetColor(Color.blue);
+        // creatureAI.SetColor(Color.blue);
     }
     Vector3 moveVec;
     public override void UpdateState()

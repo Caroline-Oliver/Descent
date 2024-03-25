@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using Aoiti.Pathfinding;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -13,6 +14,7 @@ public class CreatureAI : MonoBehaviour
 {
     public Creature pilotedCreature;
     public Creature targetCreature;
+    public string targetTag = "Player";
 
     [Header("Config")]
     public LayerMask obstacles;
@@ -40,6 +42,10 @@ public class CreatureAI : MonoBehaviour
 
     void Start()
     {
+        if (targetCreature == null) {
+            FindPlayer();
+        }
+
         huntState = new CreatureAIHuntState(this);
         patrolState = new CreatureAIPatrolState(this);
         investigateState = new CreatureAIInvestigateState(this);
@@ -65,6 +71,15 @@ public class CreatureAI : MonoBehaviour
 
     public void SetColor(Color color) {
         pilotedCreature.GetComponent<SpriteRenderer>().color = color;
+    }
+
+    public void FindPlayer() {
+        GameObject player = GameObject.FindGameObjectWithTag(targetTag);
+        Creature target = player.GetComponent<Creature>();
+
+        if (target != null) {
+            targetCreature = target;
+        }
     }
 
     public Creature GetTarget() {

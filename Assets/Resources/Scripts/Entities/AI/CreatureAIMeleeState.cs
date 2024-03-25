@@ -9,15 +9,14 @@ public class CreatureAIMeleeState : CreatureAIState
 
     public override void BeginState()
     {
-        creatureAI.SetColor(Color.red);
+        // creatureAI.SetColor(Color.red);
     }
 
     public override void UpdateState()
     {
         if (timer < timestampOfRelease) {
-            Debug.Log(timestampOfRelease - timer);
+            // continue;
         }
-
         else if(creatureAI.GetTarget() == null){
             creatureAI.ChangeState(creatureAI.investigateState);
         }

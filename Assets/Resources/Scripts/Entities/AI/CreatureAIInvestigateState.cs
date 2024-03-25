@@ -15,7 +15,7 @@ public class CreatureAIInvestigateState : CreatureAIState
         }
         creatureAI.GetTargetMoveCommand(ref path);
         Debug.Log(path.Count);
-        creatureAI.SetColor(Color.yellow);
+        // creatureAI.SetColor(Color.yellow);
     }
     public override void UpdateState()
     {
