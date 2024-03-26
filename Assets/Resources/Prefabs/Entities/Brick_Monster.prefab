@@ -233,7 +233,7 @@ MonoBehaviour:
   body: {fileID: 0}
   groundMask:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 4608
   jumpOffset: -0.5
   jumpRadius: 0.25
   attackPoint: {fileID: 1672829629244410930}
@@ -260,6 +260,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pilotedCreature: {fileID: 6708425949314988992}
   targetCreature: {fileID: 0}
+  targetTag: Player
   obstacles:
     serializedVersion: 2
     m_Bits: 0

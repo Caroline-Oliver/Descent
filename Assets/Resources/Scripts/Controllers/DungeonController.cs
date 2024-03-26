@@ -10,7 +10,7 @@ public class DungeonController : MonoBehaviour
     [SerializeField] public float spawnHorizontalOffset;
     [SerializeField] GameState gameState;
     [SerializeField] GameObject enemyPrefab;
-    private int[] progression = {2, 3, 5, 7, 10};
+    private readonly int[] progression = {2, 3, 5, 7, 10};
 
     // Start is called before the first frame update
     void Start()
@@ -19,8 +19,13 @@ public class DungeonController : MonoBehaviour
             SpawnEnemies(progression[0]);
         }
         else {
-            gameState.NextLevel();
-            SpawnEnemies(progression[gameState.GetLevel()]);
+            gameState.currentLevel++;
+            if (gameState.currentLevel >= progression.Length) {
+                SpawnEnemies(progression[^1]);
+            }
+            else {
+                SpawnEnemies(progression[gameState.currentLevel-1]);
+            }
         }
     }
 
