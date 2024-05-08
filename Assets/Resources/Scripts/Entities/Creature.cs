@@ -29,6 +29,9 @@ public class Creature : MonoBehaviour
     [SerializeField] float timeUntilNextAttack = 0;
     [SerializeField] float damage = 1f;
     [SerializeField] float resistance = 1f;
+    float hurtColorStartTimestamp = -100f;
+    [SerializeField] float hurtColorRiseDuration = 0.25f;
+    [SerializeField] float hurtColorFallDuration = 0.5f;
 
     [Header("Timer")]
     [SerializeField] float timer = 0f;
@@ -36,6 +39,8 @@ public class Creature : MonoBehaviour
     private SpriteRenderer spriteRenderer;
 
     void Awake() {
+        Health = MaxHealth;
+        
         body = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
 
@@ -49,6 +54,7 @@ public class Creature : MonoBehaviour
         if (Health <= 0) {
             Destroy(gameObject);
         }
+        HandleHurtColor();
     }
 
     void FixedUpdate() {
@@ -106,14 +112,15 @@ public class Creature : MonoBehaviour
     public void ChangeColor(Color color) {
         spriteRenderer.color = color;
     }
-
-    public IEnumerator ProgressiveChangeColor(Color color1, Color color2, float duration) {
-        float timer = 0;
-        while (timer < duration) {
-            spriteRenderer.color = Color.Lerp(color1, color2, timer / duration);
-
-            timer += Time.deltaTime;
-            yield return new WaitForSeconds(0.01f);
+    
+    private void HandleHurtColor() {
+        // in rising phase
+        if (timer < hurtColorStartTimestamp + hurtColorRiseDuration) {
+            ChangeColor(Color.Lerp(Color.white, Color.red, (timer - hurtColorStartTimestamp) / hurtColorRiseDuration));
+        }
+        // in falling phase
+        else if (timer > hurtColorStartTimestamp + hurtColorRiseDuration && timer < hurtColorStartTimestamp + hurtColorRiseDuration + hurtColorFallDuration) {
+            ChangeColor(Color.Lerp(Color.red, Color.white, (timer - (hurtColorStartTimestamp+hurtColorRiseDuration)) / hurtColorFallDuration));
         }
     }
 
@@ -131,7 +138,27 @@ public class Creature : MonoBehaviour
 
     public void Hurt(float damage) {
         Health -= 1 / resistance * damage;
-        StartCoroutine(ProgressiveChangeColor(Color.red, Color.white, 0.5f));
+        if (timer > hurtColorStartTimestamp+hurtColorRiseDuration+hurtColorFallDuration) {
+            hurtColorStartTimestamp = timer;
+        }
+
+        // already being damaged and in rising phase, send straight to fall
+        else if (timer < hurtColorStartTimestamp + hurtColorRiseDuration) {
+            hurtColorStartTimestamp = timer - hurtColorRiseDuration;
+        }
+        // already in falling phase
+        else if (timer > hurtColorStartTimestamp + hurtColorRiseDuration && timer < hurtColorStartTimestamp + hurtColorRiseDuration + hurtColorFallDuration) {
+            var percentLeft = 1 - (timer - (hurtColorStartTimestamp+hurtColorRiseDuration)) / hurtColorFallDuration;
+            hurtColorStartTimestamp = timer - hurtColorRiseDuration * percentLeft;
+        }
+    }
+
+    public float getMaxHealth() {
+        return MaxHealth;
+    }
+
+    public float getCurrentHealth() {
+        return Health;
     }
 
     private void OnDrawGizmos() {

@@ -9,18 +9,28 @@ public class DoorToNewScene : MonoBehaviour
     [SerializeField] string nextScene;
     [SerializeField] bool startOpen = true;
     [SerializeField] float delay = 0.25f;
+    private AnimationStateChanger animationStateChanger;
+
     private bool open;
 
+    void Awake() {
+        animationStateChanger = GetComponent<AnimationStateChanger>();
+        if (animationStateChanger == null) {
+            Debug.LogError("No animation state changer attatched!!!");
+        }
+    }
+
     void Start() {
-        open = startOpen;
+        Open(startOpen);
     }
 
-    public void Open() {
-        open = true;
-    }
-
-    public void Close() {
-        open = false;
+    public void Open(bool open) {
+        this.open = open;
+        if (open) {
+            animationStateChanger.ChangeAnimationState("Active_Teleporter");
+        } else {
+            animationStateChanger.ChangeAnimationState("Inactive_Teleporter");
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)

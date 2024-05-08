@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class DungeonController : MonoBehaviour
 {
@@ -10,8 +11,11 @@ public class DungeonController : MonoBehaviour
     [SerializeField] public float spawnHorizontalOffset;
     [SerializeField] GameState gameState;
     [SerializeField] GameObject enemyPrefab;
+    [SerializeField] Tilemap foreground;
+    [SerializeField] Tilemap background;
+    [SerializeField] Camera mainCamera;
     private readonly int[] progression = {2, 3, 5, 7, 10};
-
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -21,18 +25,44 @@ public class DungeonController : MonoBehaviour
         else {
             gameState.currentLevel++;
             if (gameState.currentLevel >= progression.Length) {
-                SpawnEnemies(progression[^1]);
+                SpawnEnemies(progression[^1] + (gameState.currentLevel - progression.Length)*4);
             }
             else {
                 SpawnEnemies(progression[gameState.currentLevel-1]);
             }
         }
+        
+        StartCoroutine(handleInitialTimeDilation(2.0f, 0.25f));
     }
 
     // Update is called once per frame
     void Update()
     {
+
+    }
+
+    IEnumerator handleInitialTimeDilation(float time, float timeDilation) {
+        float originalTimeDilation = Time.timeScale;
+        float timer = 0f;
+        bool wasPaused = false;
         
+        Time.timeScale = timeDilation;
+        
+        
+        while (timer < time) {
+            if (Time.timeScale == 0) {
+                wasPaused = true;
+                yield return null;
+            }
+            else if (Time.timeScale != 0 && wasPaused) {
+                wasPaused = false;
+                Time.timeScale = timeDilation;
+            }
+
+            timer += Time.deltaTime;
+        }
+
+        Time.timeScale = originalTimeDilation;
     }
 
     public void SpawnEnemies(int countToSpawn) {

@@ -26,8 +26,6 @@ public class CreatureAIMeleeState : CreatureAIState
         }
         
         else {
-            Debug.Log("About to attack...");
-
             creatureAI.pilotedCreature.TurnCreatureToward(creatureAI.targetCreature.transform.position);
             creatureAI.pilotedCreature.Attack();
             timestampOfRelease = timer + creatureAI.pilotedCreature.attackCoolDown;
